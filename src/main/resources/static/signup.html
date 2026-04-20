@@ -1,10 +1,52 @@
-<h2>회원가입</h2>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
 
-<input id="school" placeholder="학교 이름">
-<input id="username" placeholder="아이디">
-<input id="password" type="password" placeholder="비밀번호">
+    <style>
+        body {
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f5f5f5;
+        }
 
-<button onclick="signup()">가입하기</button>
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>회원가입</h2>
+
+    <input id="school" placeholder="학교 이름">
+    <input id="username" placeholder="아이디">
+    <input id="password" type="password" placeholder="비밀번호">
+
+    <button onclick="signup()">가입하기</button>
+</div>
 
 <script>
     async function signup() {
@@ -18,10 +60,16 @@
             })
         });
 
-        const data = await res.json();
+        if (!res.ok) {
+            alert("가입 실패");
+            return;
+        }
 
         alert("가입 완료");
 
         location.href = "/login.html";
     }
 </script>
+
+</body>
+</html>
