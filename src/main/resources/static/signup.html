@@ -1,0 +1,27 @@
+<h2>회원가입</h2>
+
+<input id="school" placeholder="학교 이름">
+<input id="username" placeholder="아이디">
+<input id="password" type="password" placeholder="비밀번호">
+
+<button onclick="signup()">가입하기</button>
+
+<script>
+    async function signup() {
+        const res = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                schoolName: document.getElementById('school').value,
+                username: document.getElementById('username').value,
+                password: document.getElementById('password').value
+            })
+        });
+
+        const data = await res.json();
+
+        alert("가입 완료");
+
+        location.href = "/login.html";
+    }
+</script>
