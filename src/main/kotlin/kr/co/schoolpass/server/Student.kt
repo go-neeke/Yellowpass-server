@@ -23,7 +23,7 @@ data class Student(
     val classNo: Int,
 
     @Column(name = "qr_code")
-    val qrCode: String
+    val qrCode: String,
 
     val boardedAt: LocalDateTime   // ✅ 추가
 )
