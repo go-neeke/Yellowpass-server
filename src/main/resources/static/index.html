@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>SchoolPass 관리자</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>학생 목록</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>이름</th>
+        <th>학년</th>
+        <th>반</th>
+        <th>QR 코드</th>
+    </tr>
+    </thead>
+
+    <tbody id="studentTable"></tbody>
+</table>
+
+<script>
+    async function loadStudents() {
+        const res = await fetch('/api/students');
+        const data = await res.json();
+
+        const table = document.getElementById('studentTable');
+        table.innerHTML = '';
+
+        data.forEach(student => {
+            const row = `
+                <tr>
+                    <td>${student.id}</td>
+                    <td>${student.name}</td>
+                    <td>${student.grade}</td>
+                    <td>${student.classNo}</td>
+                    <td>${student.qrCode}</td>
+                </tr>
+            `;
+            table.innerHTML += row;
+        });
+    }
+
+    loadStudents();
+</script>
+
+</body>
+</html>
