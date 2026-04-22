@@ -17,5 +17,5 @@ jobs:
           username: root
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/Schoolpass-server
+            cd ~/Yellowpass-server
             ./deploy.sh

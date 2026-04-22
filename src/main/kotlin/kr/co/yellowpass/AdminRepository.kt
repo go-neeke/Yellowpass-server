@@ -1,6 +1,6 @@
-package kr.co.schoolpass.server
+package kr.co.yellowpass
 
-import kr.co.schoolpass.server.data.Admin
+import kr.co.yellowpass.data.Admin
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AdminRepository : JpaRepository<Admin, Long> {

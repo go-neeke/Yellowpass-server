@@ -1,7 +1,7 @@
-package kr.co.schoolpass.server
+package kr.co.yellowpass
 
-import kr.co.schoolpass.server.data.BoardingRequest
-import kr.co.schoolpass.server.data.Student
+import kr.co.yellowpass.data.BoardingRequest
+import kr.co.yellowpass.data.Student
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 

@@ -1,4 +1,4 @@
-package kr.co.schoolpass.server.data
+package kr.co.yellowpass.data
 
 data class BoardingRequest(
     val qrCode: String,

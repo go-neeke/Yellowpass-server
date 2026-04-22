@@ -1,6 +1,6 @@
-package kr.co.schoolpass.server
+package kr.co.yellowpass
 
-import kr.co.schoolpass.server.data.Student
+import kr.co.yellowpass.data.Student
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

@@ -1,4 +1,4 @@
-package kr.co.schoolpass.server.data
+package kr.co.yellowpass.data
 
 import jakarta.persistence.*
 import java.time.LocalDateTime

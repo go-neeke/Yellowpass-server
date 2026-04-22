@@ -6,7 +6,7 @@ plugins {
 	kotlin("plugin.jpa") version "2.2.21"
 }
 
-group = "kr.co.schoolpass"
+group = "kr.co.yellowpass"
 version = "0.0.1-SNAPSHOT"
 
 java {
