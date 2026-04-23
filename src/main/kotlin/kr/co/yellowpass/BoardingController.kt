@@ -1,5 +1,6 @@
 package kr.co.yellowpass
 
+import kr.co.yellowpass.data.BoardingLog
 import kr.co.yellowpass.data.BoardingRequest
 import kr.co.yellowpass.data.Student
 import org.springframework.web.bind.annotation.*
@@ -9,7 +10,8 @@ import java.time.LocalDateTime
 @RequestMapping("/api")
 class BoardingController(
     private val studentRepository: StudentRepository,
-    private val schoolRepository: SchoolRepository   // ⭐ 추가
+    private val schoolRepository: SchoolRepository,
+    private val boardingLogRepository: BoardingLogRepository   // ⭐ 추가
 ) {
 
     @PostMapping("/board")
@@ -20,25 +22,16 @@ class BoardingController(
             .orElseThrow { RuntimeException("학교 없음") }
 
         // 2️⃣ 학생 조회
-        var student = studentRepository.findByQrCode(req.qrCode)
+        val student = studentRepository.findByQrCode(req.qrCode) ?: throw RuntimeException("등록되지 않은 학생")
 
-        if (student == null) {
-            // 3️⃣ 없으면 생성
-            student = studentRepository.save(
-                Student(
-                    school = school,   // ⭐ 여기 핵심
-                    name = "신규학생",
-                    grade = 0,
-                    classNo = 0,
-                    qrCode = req.qrCode,
-                    boardedAt = LocalDateTime.now()
-                )
-            )
-        } else {
-            // 4️⃣ 있으면 업데이트
-            student.boardedAt = LocalDateTime.now()
-            studentRepository.save(student)
-        }
+        // ⭐ 핵심: boarding_log 저장
+        val log = BoardingLog(
+            student = student,
+            boardedAt = LocalDateTime.now(),
+            vehicleNo = "BUS-01"
+        )
+
+        boardingLogRepository.save(log)
 
         return "OK"
     }

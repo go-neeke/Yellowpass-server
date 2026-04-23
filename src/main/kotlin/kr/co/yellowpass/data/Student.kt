@@ -23,6 +23,4 @@ data class Student(
 
     @Column(name = "qr_code")
     val qrCode: String,
-
-    var boardedAt: LocalDateTime   // ✅ 추가
 )
