@@ -15,7 +15,9 @@ data class BoardingLog(
     @JoinColumn(name = "student_id")
     val student: Student,
 
+    @Column(name = "boarded_at")
     val boardedAt: LocalDateTime,
 
+    @Column(name = "vehicle_no")
     val vehicleNo: String?
 )

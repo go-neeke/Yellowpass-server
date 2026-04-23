@@ -1,5 +1,6 @@
 package kr.co.yellowpass.data
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -16,6 +17,7 @@ data class Vehicle(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 
+    @Column(name = "vehicle_no")   // ⭐ 필수
     val vehicleNo: String,
 
     val username: String,
