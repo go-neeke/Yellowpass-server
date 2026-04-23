@@ -10,25 +10,23 @@ import java.time.LocalDateTime
 @RequestMapping("/api")
 class BoardingController(
     private val studentRepository: StudentRepository,
-    private val schoolRepository: SchoolRepository,
-    private val boardingLogRepository: BoardingLogRepository   // ⭐ 추가
+    private val boardingLogRepository: BoardingLogRepository,
+    private val vehicleRepository: VehicleRepository
 ) {
 
     @PostMapping("/board")
     fun board(@RequestBody req: BoardingRequest): String {
 
-        // 1️⃣ 학교 조회
-        val school = schoolRepository.findById(req.schoolId)
-            .orElseThrow { RuntimeException("학교 없음") }
+        val student = studentRepository.findByQrCode(req.qrCode)
+            ?: throw RuntimeException("학생 없음")
 
-        // 2️⃣ 학생 조회
-        val student = studentRepository.findByQrCode(req.qrCode) ?: throw RuntimeException("등록되지 않은 학생")
+        val vehicle = vehicleRepository.findById(req.vehicleId)
+            .orElseThrow { RuntimeException("차량 없음") }
 
-        // ⭐ 핵심: boarding_log 저장
         val log = BoardingLog(
             student = student,
             boardedAt = LocalDateTime.now(),
-            vehicleNo = "BUS-01"
+            vehicleNo = vehicle.vehicleNo
         )
 
         boardingLogRepository.save(log)
