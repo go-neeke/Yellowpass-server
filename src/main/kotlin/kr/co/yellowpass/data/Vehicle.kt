@@ -11,19 +11,19 @@ import org.springframework.data.annotation.Id
 
 @Entity
 @Table(name = "vehicles")
-data class Vehicle(
+class Vehicle(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    var id: Long? = null,
 
-    @Column(name = "vehicle_no")   // ⭐ 필수
-    val vehicleNo: String,
+    @Column(name = "vehicle_no")
+    var vehicleNo: String,
 
-    val username: String,
-    val password: String,
+    var username: String,
+    var password: String,
 
     @ManyToOne
     @JoinColumn(name = "school_id")
-    val school: School
+    var school: School
 )
