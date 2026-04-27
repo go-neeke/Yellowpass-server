@@ -1,6 +1,6 @@
-package kr.co.yellowpass
+package kr.co.yellowpass.server.repository
 
-import kr.co.yellowpass.data.Admin
+import kr.co.yellowpass.server.data.Admin
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AdminRepository : JpaRepository<Admin, Long> {

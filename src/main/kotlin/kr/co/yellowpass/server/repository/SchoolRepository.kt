@@ -1,6 +1,6 @@
-package kr.co.yellowpass
+package kr.co.yellowpass.server.repository
 
-import kr.co.yellowpass.data.School
+import kr.co.yellowpass.server.data.School
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface SchoolRepository : JpaRepository<School, Long>

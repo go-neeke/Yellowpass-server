@@ -1,4 +1,4 @@
-package kr.co.yellowpass.data
+package kr.co.yellowpass.server.data
 
 data class SignupRequest(
     val schoolName: String,

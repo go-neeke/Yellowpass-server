@@ -1,4 +1,4 @@
-package kr.co.yellowpass.data
+package kr.co.yellowpass.server.data
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -13,7 +13,7 @@ data class Student(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long,
 
     val name: String,
     val grade: Int,
@@ -21,6 +21,6 @@ data class Student(
     @Column(name = "class_no")
     val classNo: Int,
 
-    @Column(name = "qr_code")
+    @Column(name = "qr_code", unique = true)
     val qrCode: String,
 )

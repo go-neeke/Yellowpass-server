@@ -1,6 +1,7 @@
-package kr.co.yellowpass
+package kr.co.yellowpass.server.controller
 
-import kr.co.yellowpass.data.Student
+import kr.co.yellowpass.server.data.Student
+import kr.co.yellowpass.server.repository.StudentRepository
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

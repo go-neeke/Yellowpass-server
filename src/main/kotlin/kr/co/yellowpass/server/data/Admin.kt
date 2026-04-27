@@ -1,4 +1,4 @@
-package kr.co.yellowpass.data
+package kr.co.yellowpass.server.data
 
 import jakarta.persistence.*
 
