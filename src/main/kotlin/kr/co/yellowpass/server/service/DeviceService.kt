@@ -20,12 +20,8 @@ class DeviceService(
                     fcmToken = token
                 )
             )
-        } else {
-            // 부모가 바뀌었을 수도 있으니까 업데이트
-            if (existing.parentId != parentId) {
-                val updated = existing.copy(parentId = parentId)
-                deviceTokenRepository.save(updated)
-            }
+        } else if (existing.parentId != parentId) {
+            deviceTokenRepository.save(existing.copy(parentId = parentId))
         }
     }
 }

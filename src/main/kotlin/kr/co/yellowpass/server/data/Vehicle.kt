@@ -20,9 +20,6 @@ class Vehicle(
     @Column(name = "vehicle_no")
     var vehicleNo: String = "",
 
-    var username: String = "",
-    var password: String = "",
-
     @ManyToOne
     @JoinColumn(name = "school_id")
     var school: School? = null

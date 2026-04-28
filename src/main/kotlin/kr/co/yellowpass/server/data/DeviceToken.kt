@@ -13,10 +13,11 @@ data class DeviceToken(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    var id: Long? = null,
 
+    @Column(name = "parent_id")
     var parentId: Long,
 
-    @Column(length = 1000, unique = true)
+    @Column(name = "fcm_token", length = 255, unique = true)
     var fcmToken: String
 )
