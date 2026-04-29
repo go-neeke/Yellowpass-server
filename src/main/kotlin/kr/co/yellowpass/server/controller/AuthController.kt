@@ -84,14 +84,11 @@ class AuthController(
     }
 
     @PostMapping("/signup")
-    fun signup(@RequestBody req: SignupRequest): Admin {
+    fun signup(@RequestBody req: SignupRequest): ResponseEntity<Any> {
 
-        // 1. 학교 생성
-        val school = schoolRepository.save(
-            School(name = req.schoolName)
-        )
+        val school = schoolRepository.findById(req.schoolId)
+            .orElseThrow { RuntimeException("학교 없음") }
 
-        // 2. 관리자 생성
         val admin = adminRepository.save(
             Admin(
                 username = req.username,
@@ -100,6 +97,6 @@ class AuthController(
             )
         )
 
-        return admin
+        return ResponseEntity.ok(admin)
     }
 }

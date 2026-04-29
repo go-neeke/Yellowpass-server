@@ -21,7 +21,7 @@
             width: 300px;
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 10px;
             margin-top: 10px;
@@ -41,7 +41,9 @@
 <div class="box">
     <h2>회원가입</h2>
 
-    <input id="school" placeholder="학교 이름">
+    <!-- 🔥 학교 선택 -->
+    <select id="school"></select>
+
     <input id="username" placeholder="아이디">
     <input id="password" type="password" placeholder="비밀번호">
 
@@ -49,15 +51,31 @@
 </div>
 
 <script>
+
+    // 🔥 학교 목록 불러오기
+    async function loadSchools() {
+        const res = await fetch('/api/schools');
+        const schools = await res.json();
+
+        const select = document.getElementById('school');
+        select.innerHTML = "";
+
+        schools.forEach(s => {
+            select.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+        });
+    }
+
     async function signup() {
+
+        const schoolId = document.getElementById('school').value;
+
         const res = await fetch('/api/auth/signup', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                schoolName: document.getElementById('school').value,
                 username: document.getElementById('username').value,
                 password: document.getElementById('password').value,
-                role: "ADMIN"
+                schoolId: schoolId
             })
         });
 
@@ -67,9 +85,10 @@
         }
 
         alert("가입 완료");
-
         location.href = "/login.html";
     }
+
+    loadSchools();
 </script>
 
 </body>
