@@ -1,6 +1,6 @@
 package kr.co.yellowpass.server.service
 
-import kr.co.yellowpass.server.data.DeviceToken
+import kr.co.yellowpass.server.data.entity.DeviceToken
 import kr.co.yellowpass.server.repository.DeviceTokenRepository
 import org.springframework.stereotype.Service
 

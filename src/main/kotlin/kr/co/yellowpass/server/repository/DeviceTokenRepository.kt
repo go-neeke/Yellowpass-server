@@ -1,6 +1,6 @@
 package kr.co.yellowpass.server.repository
 
-import kr.co.yellowpass.server.data.DeviceToken
+import kr.co.yellowpass.server.data.entity.DeviceToken
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param

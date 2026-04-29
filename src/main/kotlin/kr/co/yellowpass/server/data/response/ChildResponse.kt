@@ -1,4 +1,4 @@
-package kr.co.yellowpass.server.data
+package kr.co.yellowpass.server.data.response
 
 data class ChildResponse(
     val studentId: Long,

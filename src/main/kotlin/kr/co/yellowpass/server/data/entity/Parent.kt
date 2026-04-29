@@ -1,4 +1,4 @@
-package kr.co.yellowpass.server.data
+package kr.co.yellowpass.server.data.entity
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
@@ -16,5 +16,7 @@ class Parent(
 
     val name: String,
 
-    val phone: String
+    val phone: String,
+
+    val password: String
 )

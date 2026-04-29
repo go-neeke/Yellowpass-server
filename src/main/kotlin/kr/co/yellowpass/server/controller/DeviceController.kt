@@ -1,7 +1,7 @@
 package kr.co.yellowpass.server.controller
 
-import kr.co.yellowpass.server.data.DeviceToken
-import kr.co.yellowpass.server.data.DeviceTokenRequest
+import kr.co.yellowpass.server.data.entity.DeviceToken
+import kr.co.yellowpass.server.data.request.DeviceTokenRequest
 import kr.co.yellowpass.server.repository.DeviceTokenRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping

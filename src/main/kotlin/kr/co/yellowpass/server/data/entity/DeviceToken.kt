@@ -1,4 +1,4 @@
-package kr.co.yellowpass.server.data
+package kr.co.yellowpass.server.data.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity

@@ -1,6 +1,6 @@
-package kr.co.yellowpass.server.data
+package kr.co.yellowpass.server.data.response
 
-data class BoardingHistoryResponse(
+data class BoardingDetailResponse(
     val boardingId: Long,
     val studentId: Long,
     val studentName: String,

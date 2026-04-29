@@ -1,5 +1,6 @@
-package kr.co.yellowpass.server.data
+package kr.co.yellowpass.server.data.entity
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -9,18 +10,20 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "parent_student")
-class ParentStudent(
+@Table(name = "vehicles")
+class Vehicle(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "parent_id")
-    var parent: Parent,
+    @Column(name = "vehicle_no")
+    var vehicleNo: String = "",
+
+    var username: String = "",
+    var password: String = "",
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
-    var student: Student
+    @JoinColumn(name = "school_id")
+    var school: School? = null
 )

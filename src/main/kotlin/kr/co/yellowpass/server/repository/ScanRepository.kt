@@ -1,6 +1,6 @@
 package kr.co.yellowpass.server.repository
 
-import kr.co.yellowpass.server.data.PushTarget
+import kr.co.yellowpass.server.data.entity.PushTarget
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
 

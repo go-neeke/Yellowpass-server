@@ -1,7 +1,6 @@
-package kr.co.yellowpass.server.data
+package kr.co.yellowpass.server.data.entity
 
 import jakarta.persistence.*
-import java.time.LocalDateTime
 
 @Entity
 @Table(name = "students")

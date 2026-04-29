@@ -1,10 +1,10 @@
 package kr.co.yellowpass.server.controller
 
-import kr.co.yellowpass.server.data.BoardingDetailResponse
-import kr.co.yellowpass.server.data.BoardingHistoryResponse
-import kr.co.yellowpass.server.data.BoardingLog
-import kr.co.yellowpass.server.data.BoardingRequest
-import kr.co.yellowpass.server.data.ChildResponse
+import kr.co.yellowpass.server.data.response.BoardingDetailResponse
+import kr.co.yellowpass.server.data.response.BoardingHistoryResponse
+import kr.co.yellowpass.server.data.entity.BoardingLog
+import kr.co.yellowpass.server.data.request.BoardingRequest
+import kr.co.yellowpass.server.data.response.ChildResponse
 import kr.co.yellowpass.server.repository.BoardingLogRepository
 import kr.co.yellowpass.server.repository.DeviceTokenRepository
 import kr.co.yellowpass.server.repository.ParentStudentRepository
