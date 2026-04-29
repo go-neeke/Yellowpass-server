@@ -1,7 +1,10 @@
 package kr.co.yellowpass.server.controller
 
+import kr.co.yellowpass.server.data.BoardingDetailResponse
+import kr.co.yellowpass.server.data.BoardingHistoryResponse
 import kr.co.yellowpass.server.data.BoardingLog
 import kr.co.yellowpass.server.data.BoardingRequest
+import kr.co.yellowpass.server.data.ChildResponse
 import kr.co.yellowpass.server.repository.BoardingLogRepository
 import kr.co.yellowpass.server.repository.DeviceTokenRepository
 import kr.co.yellowpass.server.repository.ParentStudentRepository
@@ -10,7 +13,9 @@ import kr.co.yellowpass.server.repository.VehicleRepository
 import kr.co.yellowpass.server.service.FcmService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.ZoneId
 
 @RestController
@@ -89,6 +94,134 @@ class BoardingController(
         } catch (e: Exception) {
             e.printStackTrace()
             ResponseEntity.status(500).body(e.message ?: "서버 오류")
+        }
+    }
+
+    @GetMapping("/boarding/history")
+    fun getBoardingHistory(
+        @RequestParam parentId: Long
+    ): ResponseEntity<Any> {
+
+        return try {
+            val mappings = parentStudentRepository.findWithStudentByParentId(parentId)
+
+            if (mappings.isEmpty()) {
+                return ResponseEntity.ok(emptyList<BoardingHistoryResponse>())
+            }
+
+            val studentIds = mappings.mapNotNull { it.student.id }
+
+            if (studentIds.isEmpty()) {
+                return ResponseEntity.ok(emptyList<BoardingHistoryResponse>())
+            }
+
+            val logs = boardingLogRepository.findHistoryByStudentIds(studentIds)
+
+            val result = logs.map { log ->
+                BoardingHistoryResponse(
+                    boardingId = log.id ?: 0L,
+                    studentId = log.student.id ?: 0L,
+                    studentName = log.student.name,
+                    schoolName = log.student.school.name,
+                    grade = log.student.grade,
+                    classNo = log.student.classNo,
+                    boardedAt = log.boardedAt.toString(),
+                    vehicleNo = log.vehicleNo
+                )
+            }
+
+            ResponseEntity.ok(result)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.status(500).body(e.message ?: "서버 오류")
+        }
+    }
+
+    @GetMapping("/boarding/{boardingId}")
+    fun getBoardingDetail(
+        @PathVariable boardingId: Long
+    ): ResponseEntity<Any> {
+
+        return try {
+            val log = boardingLogRepository.findDetailById(boardingId)
+                ?: return ResponseEntity.notFound().build()
+
+            val result = BoardingDetailResponse(
+                boardingId = log.id ?: 0L,
+                studentId = log.student.id ?: 0L,
+                studentName = log.student.name,
+                schoolName = log.student.school.name,
+                grade = log.student.grade,
+                classNo = log.student.classNo,
+                boardedAt = log.boardedAt.toString(),
+                vehicleNo = log.vehicleNo
+            )
+
+            ResponseEntity.ok(result)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.status(500).body(e.message ?: "서버 오류")
+        }
+    }
+
+    @GetMapping("/children")
+    fun getChildren(
+        @RequestParam parentId: Long
+    ): ResponseEntity<List<ChildResponse>> {
+
+        return try {
+
+            // 1. 부모 → 자녀 조회
+            val mappings = parentStudentRepository.findWithStudentByParentId(parentId)
+
+            if (mappings.isEmpty()) {
+                return ResponseEntity.ok(emptyList())
+            }
+
+            val students = mappings.map { it.student }
+            val studentIds = students.mapNotNull { it.id }
+
+            // 2. 최신 탑승 로그 조회
+            val latestLogs = if (studentIds.isNotEmpty()) {
+                boardingLogRepository.findLatestByStudentIds(studentIds)
+            } else emptyList()
+
+            val logMap = latestLogs.associateBy { it.student.id }
+
+            val today = LocalDate.now(ZoneId.of("Asia/Seoul"))
+            val now = LocalTime.now(ZoneId.of("Asia/Seoul"))
+
+            // 3. 응답 생성
+            val result = students.map { student ->
+
+                val log = logMap[student.id]
+
+                val isTodayBoarded = log?.boardedAt?.toLocalDate() == today
+
+                val status = when {
+                    isTodayBoarded -> "BOARDING"
+                    now.isAfter(LocalTime.of(8, 30)) -> "DELAY"
+                    else -> "NOT_BOARD"
+                }
+
+                ChildResponse(
+                    studentId = student.id ?: 0L,
+                    name = student.name,
+                    schoolName = student.school.name,
+                    grade = student.grade,
+                    classNo = student.classNo,
+                    lastBoardedAt = log?.boardedAt?.toString(),
+                    status = status
+                )
+            }
+
+            ResponseEntity.ok(result)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResponseEntity.status(500).body(emptyList())
         }
     }
 }
