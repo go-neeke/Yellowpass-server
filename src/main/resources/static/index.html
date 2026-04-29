@@ -6,19 +6,23 @@
 
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial;
             padding: 20px;
-            background-color: #f8f9fa;
+            background: #f8f9fa;
         }
 
         h1 {
             margin-bottom: 20px;
         }
 
+        .top-bar {
+            margin-bottom: 15px;
+        }
+
         table {
-            border-collapse: collapse;
             width: 100%;
-            background-color: white;
+            border-collapse: collapse;
+            background: white;
         }
 
         th, td {
@@ -28,15 +32,11 @@
         }
 
         th {
-            background-color: #f1f1f1;
+            background: #f1f1f1;
         }
 
         tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .top-bar {
-            margin-bottom: 10px;
+            background: #f9f9f9;
         }
 
         button {
@@ -48,30 +48,30 @@
 
 <body>
 
-<h1>📋 학생 탑승 목록</h1>
+<h1>📋 학생 탑승 기록</h1>
 
 <div class="top-bar">
-    <button onclick="loadStudents()">새로고침</button>
+    <input type="date" id="date">
+    <button onclick="loadBoarding()">조회</button>
     <button onclick="logout()">로그아웃</button>
 </div>
 
 <table>
     <thead>
     <tr>
-        <th>ID</th>
         <th>이름</th>
         <th>학년</th>
         <th>반</th>
-        <th>QR 코드</th>
+        <th>차량</th>
         <th>탑승 시간</th>
     </tr>
     </thead>
 
-    <tbody id="studentTable"></tbody>
+    <tbody id="tableBody"></tbody>
 </table>
 
 <script>
-    // 로그인 정보 확인
+
     const schoolId = localStorage.getItem("schoolId");
 
     if (!schoolId) {
@@ -79,13 +79,11 @@
     }
 
     function logout() {
-        localStorage.removeItem("schoolId");
+        localStorage.clear();
         location.href = "/login.html";
     }
 
     function formatTime(time) {
-        if (!time) return "";
-
         const date = new Date(time);
 
         return date.toLocaleString("ko-KR", {
@@ -93,51 +91,58 @@
             month: "2-digit",
             day: "2-digit",
             hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit"
+            minute: "2-digit"
         });
     }
 
-    async function loadStudents() {
+    async function loadBoarding() {
+
+        const date = document.getElementById("date").value;
+
+        if (!date) {
+            alert("날짜 선택하세요");
+            return;
+        }
+
         try {
-            const res = await fetch(`/api/students?schoolId=${schoolId}&t=${new Date().getTime()}`);
+            const res = await fetch(`/api/admin/boarding?schoolId=${schoolId}&date=${date}`);
             const data = await res.json();
 
-            console.log("데이터:", data);
-
-            const table = document.getElementById("studentTable");
+            const table = document.getElementById("tableBody");
             table.innerHTML = "";
 
             if (data.length === 0) {
-                table.innerHTML = `<tr><td colspan="6">데이터 없음</td></tr>`;
+                table.innerHTML = `<tr><td colspan="5">데이터 없음</td></tr>`;
                 return;
             }
 
-            data.forEach(student => {
-                const row = `
+            data.forEach(item => {
+                table.innerHTML += `
                     <tr>
-                        <td>${student.id}</td>
-                        <td>${student.name}</td>
-                        <td>${student.grade}</td>
-                        <td>${student.classNo}</td>
-                        <td>${student.qrCode}</td>
-                        <td>${formatTime(student.boardedAt)}</td>
+                        <td>${item.studentName}</td>
+                        <td>${item.grade}</td>
+                        <td>${item.classNo}</td>
+                        <td>${item.vehicleNo}</td>
+                        <td>${formatTime(item.boardedAt)}</td>
                     </tr>
                 `;
-                table.innerHTML += row;
             });
 
         } catch (e) {
-            console.error("API 호출 실패:", e);
-            alert("데이터 불러오기 실패");
+            console.error(e);
+            alert("조회 실패");
         }
     }
 
-    // 최초 로딩
-    loadStudents();
+    // 🔥 오늘 날짜 기본값
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("date").value = today;
 
-    // 자동 갱신 (3초)
-    setInterval(loadStudents, 3000);
+    loadBoarding();
+
+    // 🔥 3초 자동 갱신
+    setInterval(loadBoarding, 3000);
+
 </script>
 
 </body>

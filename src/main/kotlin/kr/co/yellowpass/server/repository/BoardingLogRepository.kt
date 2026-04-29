@@ -4,6 +4,7 @@ import kr.co.yellowpass.server.data.entity.BoardingLog
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
+import java.time.LocalDateTime
 
 interface BoardingLogRepository : JpaRepository<BoardingLog, Long> {
     @Query("""
@@ -42,5 +43,17 @@ interface BoardingLogRepository : JpaRepository<BoardingLog, Long> {
 """)
     fun findLatestByStudentIds(
         @Param("studentIds") studentIds: List<Long>
+    ): List<BoardingLog>
+
+    @Query("""
+    SELECT b FROM BoardingLog b
+    WHERE b.student.school.id = :schoolId
+    AND b.boardedAt BETWEEN :start AND :end
+    ORDER BY b.boardedAt DESC
+""")
+    fun findBySchoolAndDate(
+        schoolId: Long,
+        start: LocalDateTime,
+        end: LocalDateTime
     ): List<BoardingLog>
 }

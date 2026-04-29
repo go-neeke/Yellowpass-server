@@ -39,10 +39,10 @@ class AuthController(
                 }
 
                 ResponseEntity.ok(
-                    LoginResponse(
-                        userId = admin.id!!,
-                        name = admin.username,
-                        role = Role.ADMIN
+                    mapOf(
+                        "userId" to admin.id,
+                        "username" to admin.username,
+                        "schoolId" to admin.school.id
                     )
                 )
             }

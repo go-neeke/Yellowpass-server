@@ -230,4 +230,33 @@ class BoardingController(
             ResponseEntity.status(500).body(emptyList())
         }
     }
+
+    @GetMapping("/admin/boarding")
+    fun getBoardingByDate(
+        @RequestParam schoolId: Long,
+        @RequestParam date: String // yyyy-MM-dd
+    ): ResponseEntity<List<BoardingHistoryResponse>> {
+
+        val start = LocalDate.parse(date).atStartOfDay()
+        val end = start.plusDays(1)
+
+        val logs = boardingLogRepository.findBySchoolAndDate(
+            schoolId,
+            start,
+            end
+        )
+
+        val result = logs.map {
+            BoardingHistoryResponse(
+                studentId = it.student.id ?: 0,
+                studentName = it.student.name,
+                grade = it.student.grade,
+                classNo = it.student.classNo,
+                boardedAt = it.boardedAt.toString(),
+                vehicleNo = it.vehicleNo
+            )
+        }
+
+        return ResponseEntity.ok(result)
+    }
 }
